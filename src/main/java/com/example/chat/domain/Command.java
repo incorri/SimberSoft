@@ -14,4 +14,5 @@ public class Command {
     private Long id;
     private String command;
     private String description;
+    private Boolean deleted;
 }

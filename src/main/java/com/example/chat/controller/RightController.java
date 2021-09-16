@@ -1,38 +1,37 @@
 package com.example.chat.controller;
 
-import com.example.chat.domain.User;
+import com.example.chat.domain.Right;
 import com.example.chat.exceptions.EntityAlreadyExistsException;
 import com.example.chat.exceptions.EntityNotFoundException;
-import com.example.chat.model.UserModel;
-import com.example.chat.service.UserService;
+import com.example.chat.service.RightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/Users")
-public class UserController {
+@RequestMapping("/Rights")
+public class RightController {
 
     @Autowired
-    private UserService userService;
+    private RightService rightService;
 
     @PostMapping
-    public ResponseEntity registrUser(@RequestBody User user){
+    public ResponseEntity registrRight(@RequestBody Right right){
         try {
-            userService.registrUser(user);
-            return ResponseEntity.ok("User saved");
+            rightService.registrRight(right);
+            return ResponseEntity.ok("Right saved");
         } catch (EntityAlreadyExistsException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e){
-            return ResponseEntity.badRequest().body("User saving error");
+            return ResponseEntity.badRequest().body("Right saving error");
         }
     }
 
     @GetMapping
-    public ResponseEntity getUser(@RequestParam Long id){
+    public ResponseEntity getRight(@RequestParam Long id){
         try {
-            UserModel user = userService.getUser(id);
-            return ResponseEntity.ok(user);
+            Right right = rightService.getRight(id);
+            return ResponseEntity.ok(right);
         } catch (EntityNotFoundException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e){
@@ -41,13 +40,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity deleteUser(@RequestBody User user){
+    public ResponseEntity deleteRight(@RequestBody Right right){
         try {
-            user.setDeleted(true);
-            userService.saveUser(user);
-            return ResponseEntity.ok("User deleted");
+            right.setDeleted(true);
+            rightService.saveRight(right);
+            return ResponseEntity.ok("Right deleted");
         } catch (Exception e){
-            return ResponseEntity.badRequest().body("User deleting error");
+            return ResponseEntity.badRequest().body("Right deleting error");
         }
     }
 }
