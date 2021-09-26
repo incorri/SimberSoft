@@ -1,6 +1,7 @@
 package com.example.chat.service;
 
 import com.example.chat.domain.Command;
+import com.example.chat.domain.User;
 import com.example.chat.exceptions.EntityAlreadyExistsException;
 import com.example.chat.exceptions.EntityNotFoundException;
 import com.example.chat.repository.CommandRepo;
@@ -14,7 +15,7 @@ public class CommandService {
     private CommandRepo commandRepo;
 
     public Command registrCommand(Command command) throws EntityAlreadyExistsException {
-        if (commandRepo.findByName(command.getCommand()) != null){
+        if (commandRepo.findByCommand(command.getCommand()) != null){
             throw new EntityAlreadyExistsException("Command " + command.getCommand() + " already exists");
         }
         return commandRepo.save(command);
@@ -25,7 +26,7 @@ public class CommandService {
     }
 
     public Command getCommand(String name) throws EntityNotFoundException {
-        Command command = commandRepo.findByName(name);
+        Command command = commandRepo.findByCommand(name);
         if (command == null){
             throw new EntityNotFoundException("Command " + name + " not found");
         }
@@ -39,8 +40,11 @@ public class CommandService {
         }
         return command;
     }
-    public Long deleteCommand(Long id){
-        commandRepo.deleteById(id);
-        return id;
+
+    public Command markDeleteCommand(Long id){
+        Command command = commandRepo.findById(id).get();
+        command.setDeleted(true);
+        return commandRepo.save(command);
     }
+
 }

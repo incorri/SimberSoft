@@ -39,11 +39,10 @@ public class RightController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity deleteRight(@RequestBody Right right){
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteRight(@PathVariable Long id){
         try {
-            right.setDeleted(true);
-            rightService.saveRight(right);
+            rightService.markDeleteRight(id);
             return ResponseEntity.ok("Right deleted");
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Right deleting error");

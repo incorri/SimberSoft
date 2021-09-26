@@ -32,8 +32,11 @@ public class UserService {
         }
         return UserModel.toModel(user);
     }
-    public Long deleteUser(Long id){
-        userRepo.deleteById(id);
-        return id;
+
+    public User markDeleteUser(Long id){
+        User user = userRepo.findById(id).get();
+        user.setDeleted(true);
+        return userRepo.save(user);
     }
+
 }

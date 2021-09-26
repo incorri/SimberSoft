@@ -40,11 +40,10 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity deleteUser(@RequestBody User user){
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id){
         try {
-            user.setDeleted(true);
-            userService.saveUser(user);
+            userService.markDeleteUser(id);
             return ResponseEntity.ok("User deleted");
         } catch (Exception e){
             return ResponseEntity.badRequest().body("User deleting error");

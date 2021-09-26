@@ -39,26 +39,13 @@ public class CommandController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity getCommand(@RequestParam String name){
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCommand(@PathVariable Long id){
         try {
-            Command command = commandService.getCommand(name);
-            return ResponseEntity.ok(command);
-        } catch (EntityNotFoundException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e){
-            return ResponseEntity.badRequest().body("Server error");
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity deleteCommand(@RequestBody Command command){
-        try {
-            command.setDeleted(true);
-            commandService.saveCommand(command);
+            commandService.markDeleteCommand(id);
             return ResponseEntity.ok("Command deleted");
         } catch (Exception e){
-            return ResponseEntity.badRequest().body("Command deliting error");
+            return ResponseEntity.badRequest().body("Command deleting error");
         }
     }
 

@@ -32,8 +32,10 @@ public class RoleService {
         }
         return role;
     }
-    public Long deleteRole(Long id){
-        roleRepo.deleteById(id);
-        return id;
+
+    public Role markDeleteRole(Long id){
+        Role role = roleRepo.findById(id).get();
+        role.setDeleted(true);
+        return roleRepo.save(role);
     }
 }

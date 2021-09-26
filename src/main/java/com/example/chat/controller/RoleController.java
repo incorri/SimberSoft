@@ -39,11 +39,10 @@ public class RoleController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity deleteRole(@RequestBody Role role){
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteRole(@PathVariable Long id){
         try {
-            role.setDeleted(true);
-            roleService.saveRole(role);
+            roleService.markDeleteRole(id);
             return ResponseEntity.ok("Role deleted");
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Role deleting error");

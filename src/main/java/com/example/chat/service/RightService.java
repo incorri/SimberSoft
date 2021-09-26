@@ -2,6 +2,7 @@ package com.example.chat.service;
 
 import com.example.chat.domain.Right;
 import com.example.chat.domain.Role;
+import com.example.chat.domain.User;
 import com.example.chat.exceptions.EntityAlreadyExistsException;
 import com.example.chat.exceptions.EntityNotFoundException;
 import com.example.chat.repository.RightRepo;
@@ -32,8 +33,11 @@ public class RightService {
         }
         return right;
     }
-    public Long deleteRight(Long id){
-        rightRepo.deleteById(id);
-        return id;
+
+    public Right markDeleteRight(Long id){
+        Right right = rightRepo.findById(id).get();
+        right.setDeleted(true);
+        return rightRepo.save(right);
     }
+
 }
