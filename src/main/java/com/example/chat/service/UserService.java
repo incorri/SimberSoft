@@ -33,6 +33,10 @@ public class UserService {
         return UserModel.toModel(user);
     }
 
+    public User findByName(String name) {
+        return userRepo.findByName(name);
+    }
+
     public User markDeleteUser(Long id){
         User user = userRepo.findById(id).get();
         user.setDeleted(true);

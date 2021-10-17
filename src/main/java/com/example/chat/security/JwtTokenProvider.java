@@ -74,6 +74,9 @@ public class JwtTokenProvider {
     }
     public List<String> getRoleNames(List<Role> roles){
         List<String> result = new ArrayList<>();
+        if (roles == null || roles.isEmpty())
+            result.add("User");
+        else
         roles.forEach(role -> result.add(role.getName()));
         return result;
     }

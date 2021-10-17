@@ -21,6 +21,7 @@ public final class JwtUserFactory {
                 true,
                 mapToAuthority(new ArrayList<>(user.getRoles())));
     }
+
     private static List<GrantedAuthority> mapToAuthority(List<Role> roles){
         return roles.stream()
                 .map(role ->
