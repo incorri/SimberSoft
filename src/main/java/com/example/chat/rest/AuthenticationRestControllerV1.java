@@ -2,6 +2,7 @@ package com.example.chat.rest;
 
 import com.example.chat.domain.User;
 import com.example.chat.dto.AuthenticationRequestDto;
+import com.example.chat.dto.ChangePasswordRequestDto;
 import com.example.chat.exceptions.EntityNotFoundException;
 import com.example.chat.repository.UserRepo;
 import com.example.chat.security.JwtTokenProvider;
@@ -66,6 +67,40 @@ public class AuthenticationRestControllerV1 {
         Map<Object, Object> response = new HashMap<>();
         response.put("username", username);
         response.put("token", token);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("resrt")
+    public ResponseEntity resrt(@RequestBody AuthenticationRequestDto requestDto){
+        String username = requestDto.getUsername();
+        String password = passwordEncoder().encode("user");
+        User user = userService.findByName(username);
+        if (user == null){
+            throw new EntityNotFoundException("User with username "+username+" not found");
+        }
+        user.setPassword(password);
+        userService.saveUser(user);
+        Map<Object, Object> response = new HashMap<>();
+        response.put("password was reseted for username", username);
+        response.put("new password", "user");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("changepassword")
+    public ResponseEntity changepassword(@RequestBody ChangePasswordRequestDto requestDto){
+        String username = requestDto.getUsername();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getOldPassword()));
+        User user = userService.findByName(username);
+        if (user == null){
+            throw new EntityNotFoundException("User with username "+username+" not found");
+        }
+        String password = passwordEncoder().encode(requestDto.getNewPassword());
+        user.setPassword(password);
+        userService.saveUser(user);
+        String token = jwtTokenProvider.createToken(username,user.getRoles());
+        Map<Object, Object> response = new HashMap<>();
+        response.put("was changed, new token", token);
+        response.put("password for username", username);
         return ResponseEntity.ok(response);
     }
 }
