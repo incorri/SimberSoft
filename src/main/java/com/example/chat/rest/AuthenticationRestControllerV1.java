@@ -70,8 +70,8 @@ public class AuthenticationRestControllerV1 {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("resrt")
-    public ResponseEntity resrt(@RequestBody AuthenticationRequestDto requestDto){
+    @PostMapping("reset")
+    public ResponseEntity reset(@RequestBody AuthenticationRequestDto requestDto){
         String username = requestDto.getUsername();
         String password = passwordEncoder().encode("user");
         User user = userService.findByName(username);
